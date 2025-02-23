@@ -1,49 +1,29 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const MovieCard = ({ movie }) => {
-  const { title, description, posterURL, rating } = movie;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/movie/${movie.title}`); // Navigate to the movie details page
+  };
 
   return (
-    <div style={styles.card}>
-      <img src={posterURL} alt={title} style={styles.image} />
-      <div style={styles.details}>
-        <h2 style={styles.title}>{title}</h2>
-        <p style={styles.description}>{description}</p>
-        <p style={styles.rating}>Rating: {rating}</p>
+    <div
+      className="bg-white shadow-lg rounded-lg overflow-hidden cursor-pointer"
+      onClick={handleClick}
+    >
+      <img
+        src={movie.posterURL}
+        alt={movie.title}
+        className="w-full h-64 object-cover"
+      />
+      <div className="p-4">
+        <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
+        <p className="text-gray-900 font-bold">Rating: {movie.rating}</p>
       </div>
     </div>
   );
-};
-
-const styles = {
-  card: {
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    overflow: "hidden",
-    width: "300px",
-    margin: "10px",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  image: {
-    width: "100%",
-    height: "200px",
-    objectFit: "cover",
-  },
-  details: {
-    padding: "10px",
-  },
-  title: {
-    fontSize: "20px",
-    margin: "0 0 10px 0",
-  },
-  description: {
-    fontSize: "14px",
-    color: "#555",
-  },
-  rating: {
-    fontSize: "16px",
-    fontWeight: "bold",
-  },
 };
 
 export default MovieCard;

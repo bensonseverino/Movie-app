@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MovieList from "./MovieList";
 import Filter from "./Filter";
+import MovieDetails from "./MovieDetails";
 
 const App = () => {
   const [movies, setMovies] = useState([
@@ -10,6 +12,7 @@ const App = () => {
         "A thief who steals corporate secrets through the use of dream-sharing technology.",
       posterURL: "https://m.media-amazon.com/images/I/71uKM+LdgFL.jpg", // Replace with a valid image URL
       rating: 8.8,
+      trailerLink: "https://youtu.be/YoHD9XEInc0?si=PUuTbCmIs25uDocX", // Replace with a valid embed link
     },
     {
       title: "Interstellar",
@@ -18,6 +21,7 @@ const App = () => {
       posterURL:
         "https://images-cdn.ubuy.co.in/6352289f38bb253c44612d53-interstellar-movie-poster-24-x-36-inches.jpg", // Replace with a valid image URL
       rating: 8.6,
+      trailerLink: "https://youtu.be/zSWdZVtXT7E?si=Vc2ccLmwIGAN6mPT", // Replace with a valid embed link
     },
   ]);
 
@@ -41,39 +45,38 @@ const App = () => {
   );
 
   return (
-    <div style={styles.app}>
-      <h1 style={styles.title}>Movie App</h1>
-      <Filter
-        onTitleChange={(e) => setTitleFilter(e.target.value)}
-        onRateChange={(e) => setRateFilter(Number(e.target.value))}
-      />
-      <button onClick={handleAddMovie} style={styles.button}>
-        Add Movie
-      </button>
-      <MovieList movies={filteredMovies} />
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-100 ">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <h1 className="text-3xl font-bold text-center py-6">
+                  Movie App
+                </h1>
+                <Filter
+                  onTitleChange={(e) => setTitleFilter(e.target.value)}
+                  onRateChange={(e) => setRateFilter(Number(e.target.value))}
+                />
+                <button
+                  onClick={handleAddMovie}
+                  className="block mx-auto mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  Add Movie
+                </button>
+                <MovieList movies={filteredMovies} />
+              </>
+            }
+          />
+          <Route
+            path="/movie/:title"
+            element={<MovieDetails movies={movies} />}
+          />
+        </Routes>
+      </div>
+    </Router>
   );
-};
-
-const styles = {
-  app: {
-    textAlign: "center",
-    padding: "20px",
-  },
-  title: {
-    fontSize: "32px",
-    marginBottom: "20px",
-  },
-  button: {
-    padding: "10px 20px",
-    fontSize: "16px",
-    marginBottom: "20px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  },
 };
 
 export default App;
